@@ -165,9 +165,3 @@ npm install
 npm run dev
 npm start
 ```
-
-## Notes
-
-- Keep `.env` private.
-- Never push `CLIENT_SECRET`, `REFRESH_TOKEN`, or `JWT_SECRET` to GitHub.
-- Use `.env.example` as the safe template for sharing the project.
