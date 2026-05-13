@@ -1,6 +1,8 @@
 const userModel = require('../models/user.model')
 require('dotenv').config();
 const { sendRegisterationEmail } = require('../services/email.service');
+const tokenBlacklistModel = require('../models/blacklist.model');
+ 
 const jwt = require('jsonwebtoken');
 
 /**  
@@ -101,4 +103,18 @@ const userLoginController = async (req, res) => {
     
 }
 
-module.exports = { userRegisterController, userLoginController }
+
+const userLogoutController = async (req, res) => {
+    const token = req.cookies.token || req.headers['authorization']?.split(' ')[1];
+    if (!token) {
+        return res.status(200).json({ message: 'User logged out successfully' });
+    }
+
+    res.clearCookie('token');
+    await  tokenBlacklistModel.create({ token });
+
+    return res.status(200).json({ message: 'User logged out successfully' });
+
+}
+
+module.exports = { userRegisterController, userLoginController , userLogoutController}
